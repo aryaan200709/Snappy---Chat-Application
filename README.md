@@ -20,7 +20,7 @@ Both should be installed and make sure mongodb is running.
 #### First Method
 
 ```shell
-git clone https://github.com/koolkishan/chat-app-react-nodejs
+git clone https://github.com/Alpha2820/Snappy---Chat-Application
 cd chat-app-react-nodejs
 ```
 
