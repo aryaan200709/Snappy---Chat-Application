@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import { IoMdSend } from "react-icons/io";
 import styled from "styled-components";
-import Picker from "emoji-picker-react";
+import EmojiPicker, { Theme } from "emoji-picker-react"; // default import
 
 export default function ChatInput({ handleSendMsg }) {
   const [msg, setMsg] = useState("");
@@ -11,8 +11,8 @@ export default function ChatInput({ handleSendMsg }) {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
-  const handleEmojiClick = (emojiObject, event) => {
-    setMsg((prev) => prev + emojiObject.emoji);
+  const handleEmojiClick = (emojiData) => {
+    setMsg((prev) => prev + emojiData.emoji); // emojiData.emoji is always correct
   };
 
   const sendChat = (event) => {
@@ -28,7 +28,18 @@ export default function ChatInput({ handleSendMsg }) {
       <div className="button-container">
         <div className="emoji">
           <BsEmojiSmileFill onClick={handleEmojiPickerhideShow} />
-          {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />}
+          {showEmojiPicker && (
+            <div className="emoji-picker-popup">
+              <EmojiPicker
+                onEmojiClick={handleEmojiClick}
+                theme={Theme.DARK}
+                height={300}
+                width={300}
+                searchDisabled={true}
+                previewConfig={{ showPreview: false }}
+              />
+            </div>
+          )}
         </div>
       </div>
       <form className="input-container" onSubmit={(event) => sendChat(event)}>
@@ -81,6 +92,7 @@ const Container = styled.div`
             background-color: #9a86f3;
           }
         }
+
         .emoji-categories {
           button {
             filter: contrast(0);
@@ -138,5 +150,32 @@ const Container = styled.div`
         color: white;
       }
     }
+  }
+  .emoji-picker-popup {
+    position: absolute;
+    bottom: 70px;
+    left: 0;
+    z-index: 10;
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px #9a86f3;
+    background-color: #080420;
+    overflow: hidden;
+  }
+  .emoji-picker-popup .emoji-categories,
+  .emoji-picker-popup .emoji-categories button,
+  .emoji-picker-popup .emoji-category-button {
+    display: none !important;
+  }
+  .emoji-picker-popup .emoji-scroll-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    overflow-y: auto;
+    background-color: #080420;
+  }
+  .emoji-picker-popup .emoji-scroll-wrapper::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* Optional: just in case */
   }
 `;
